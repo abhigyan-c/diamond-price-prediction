@@ -29,9 +29,6 @@ diamond_data = pd.read_csv('diamonds.csv')
 # Handling missing values (if any)
 diamond_data.dropna(inplace=True)
 
-# Handling outliers (if any)
-# No specific handling for outliers in this code, but you can add your logic here if needed
-
 # Step 3: Preprocess the Data
 label_encoders = {}
 for column in ['cut', 'color', 'clarity']:
