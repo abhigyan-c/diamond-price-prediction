@@ -25,6 +25,8 @@ from sklearn.kernel_ridge import KernelRidge
 from sklearn.compose import TransformedTargetRegressor
 from sklearn.preprocessing import QuantileTransformer
 from sklearn.pipeline import make_pipeline
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.gaussian_process.kernels import PairwiseKernel
 
 warnings.filterwarnings('ignore')
 
@@ -356,21 +358,6 @@ print("RMSE:", nn_rmse)
 print("R-squared:", nn_r2)
 print("Accuracy (within 5%): {:.2f}%".format(nn_accuracy))
 
-# Gaussian Process Regressor
-gp_model = GaussianProcessRegressor(random_state=42)
-gp_model.fit(X_train, y_train)
-gp_predictions = gp_model.predict(X_test)
-
-gp_mae = mean_absolute_error(y_test, gp_predictions)
-gp_rmse = mean_squared_error(y_test, gp_predictions, squared=False)
-gp_r2 = r2_score(y_test, gp_predictions)
-gp_accuracy = sum(abs(y_test - gp_predictions) <= 0.05 * y_test) / len(y_test) * 100
-
-print("\nGaussian Process Regressor:")
-print("MAE:", gp_mae)
-print("RMSE:", gp_rmse)
-print("R-squared:", gp_r2)
-print("Accuracy (within 5%): {:.2f}%".format(gp_accuracy))
 
 # RANSAC Regressor
 ransac_model = RANSACRegressor(random_state=42)
@@ -387,22 +374,6 @@ print("MAE:", ransac_mae)
 print("RMSE:", ransac_rmse)
 print("R-squared:", ransac_r2)
 print("Accuracy (within 5%): {:.2f}%".format(ransac_accuracy))
-
-# Isotonic Regression
-iso_model = IsotonicRegression()
-iso_model.fit(X_train, y_train)
-iso_predictions = iso_model.predict(X_test)
-
-iso_mae = mean_absolute_error(y_test, iso_predictions)
-iso_rmse = mean_squared_error(y_test, iso_predictions, squared=False)
-iso_r2 = r2_score(y_test, iso_predictions)
-iso_accuracy = sum(abs(y_test - iso_predictions) <= 0.05 * y_test) / len(y_test) * 100
-
-print("\nIsotonic Regression:")
-print("MAE:", iso_mae)
-print("RMSE:", iso_rmse)
-print("R-squared:", iso_r2)
-print("Accuracy (within 5%): {:.2f}%".format(iso_accuracy))
 
 # Gaussian Mixture Model
 gmm_model = GaussianMixture()
