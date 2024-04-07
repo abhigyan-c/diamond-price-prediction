@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import warnings
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVR
@@ -35,8 +36,18 @@ for column in ['cut', 'color', 'clarity']:
     label_encoders[column] = LabelEncoder()
     diamond_data[column] = label_encoders[column].fit_transform(diamond_data[column])
 
+# Outlier Detection and Removal
+def remove_outliers(df, features):
+    z_scores = np.abs((df[features] - df[features].mean()) / df[features].std())
+    df = df[(z_scores < 3).all(axis=1)]
+    return df
+
+numerical_features = ['carat', 'depth', 'table', 'x', 'y', 'z']
+diamond_data = remove_outliers(diamond_data, numerical_features)
+
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(diamond_data.drop(columns=['price']))
+
 
 # Step 4: Split the Dataset
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, diamond_data['price'], test_size=0.2, random_state=42)
